@@ -263,6 +263,7 @@ main {
         't_name name'
         't_email email';
     margin-bottom: 1rem;
+    gap: 1rem;
 }
 .sidebar .user_info p{
     border: 1px solid red;
