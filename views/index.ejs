@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include ('partials/header') %>
+    <main>
+    <div class="hero">       
+        <% if (!user) { %>
+        <div class="card">
+            <h2>Get Started</h2>
+            <p>To access your account, please login or register.</p>
+            <div class="buttons">
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="card">
+            <h2>Welcome Back!</h2>
+            <%
+            // ฟังก์ชันเซนเซอร์อีเมลแบบง่าย
+            function censorEmail(email) {
+                const [name, domain] = email.split('@');
+                if (name.length <= 2) return '***@' + domain;
+                return name[0] + '*'.repeat(name.length - 1) + '@' + domain;
+            }
+            %>
+            <p>You are logged in as <%= censorEmail(user.email) %>.</p>
+            <p>Feel free to explore your dashboard.</p>
+            <div class="buttons">
+                <a href="/dashboard">Go to Dashboard</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+        <% } %>
+        <div class="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Track your expenses</li>
+                <li>Set financial goals</li>
+                <li>View detailed reports</li>
+                <li>Secure and private</li>
+            </ul>
+        </div>
+    </div>
+    </main>
+    <%- include ('partials/footer') %>
+</body>
+</html>
