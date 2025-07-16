@@ -249,7 +249,7 @@ main {
 }
 .edit_profile, .dashboard {
     width: 100%;
-    height: calc(100vh - var(--header-height) - var(--footer-height));
+    height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
     grid-template-areas: 
@@ -258,85 +258,58 @@ main {
 }
 .sidebar {
     grid-area: sidebar;
-    background: var(--color-sub2);
-    /* background: var(--color-main1); */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.sidebar .user_info {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
-    grid-template-rows: auto auto auto;
-    grid-template-areas: 
-        'header header header'
-        'email email email'
-        'last last last'
-        'since since since'
-        'actions actions actions'
-        'btns btns btns'
-        'logout logout logout';
-}
-.sidebar .user_info h2 {
-    grid-area: header;
+    background: var(--color-sub1);
+    padding: 2rem;
     color: var(--color-red);
-    text-align: center;
-    margin: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.sidebar .user_info div {
+.sidebar .sidebar-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem .5rem 1rem;
+    margin-bottom: 2rem;
 }
-.sidebar .user_info .email{
-    grid-area: email;
-
-}
-.sidebar .user_info .last_login{
-    grid-area: last;
-
-}
-.sidebar .user_info .since{
-    grid-area: since;
-
-}
-.sidebar .user_info div>strong {
+.sidebar .sidebar-header h2 {
     color: var(--color-red);
-    font-weight: bold;
+    font-size: 1.5rem;
 }
-.sidebar .user_info div p {
-    color: var(--color-green);
-    margin: 0;
-    text-align: end;
-}
-.sidebar .user_info h3{
-    margin-top: .5rem;
-    text-align: center;
-    grid-area: actions;
-    color: var(--color-red);
-    margin-bottom: 0.5rem;
-}
-.sidebar .user_info .btns {
-    grid-area: btns;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-.sidebar .user_info .logout {
-    grid-area: logout;
-    border: 1px solid #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem;
+.sidebar p {
+    color: var(--color-gray);
+    margin: .5rem 0;
 }
 .sidebar ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+}
+.sidebar ul li {
+    border-radius: 2rem;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    padding: 1rem .5rem;
+    transition: all 0.2s ease;
+}
+.sidebar ul li a {
+    padding: 1rem;
+    margin-left: .5rem;
+    border-radius: 2rem;
+    color: var(--color-red);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+.sidebar ul li:hover a ,
+.sidebar ul li.active a {
+    color: var(--color-main3);
+}
+.sidebar ul li:hover {
+    background: var(--color-main2);
+}
+.sidebar ul li.active {
+    background: var(--color-main2);
+    transform: translatex(3.5rem);
 }
 .main_content {
+    z-index: 100;
     grid-area: main;
-    background: var(--color-main3);
+    background: var(--color-main2);
     padding: 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }

@@ -1,37 +1,24 @@
 <div class="sidebar">
-    <div class="user_info">
-        <h2>Profile</h2>
-        <div class="email">
-            <strong>Email:</strong>
-            <p><%= user.email %></p>
-        </div>
-        <div class="last_login">
-            <strong>Last Login:</strong>
-            <p><%= user.last_Login %></p>
-        </div>
-        <div class="since">
-            <strong>Member Since:</strong>
-            <p><%= user.created_at %></p>
-        </div>
-        <h3>Actions</h3>
-        <div class="btns">
-            <div class="btn"><a href="/view_profile">View Profile</a></div>
-            <div class="btn"><a href="/edit_profile">Edit Profile</a></div>
-            <div class="btn"><a href="/change_password">Change Password</a></div>
+    <div class="sidebar-header">
 
-        </div>
-        <a href="/logout" class="logout">Logout</a>
+        <h2>Finance Tracker</h2>
     </div>
-    <h2>Navigation</h2>
-    <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/transactions">Transactions</a></li>
-            <li><a href="/timeline">Timeline</a></li>
-            <li><a href="/budgets">Budgets</a></li>
-            <li><a href="/goals">Goals</a></li>
-            <li><a href="/settings">Settings</a></li>
-            <li><a href="/reports">Reports</a></li>
-            <li><a href="/logout">Logout</a></li>
+    <p>MENU</p>
+    <ul>
+        <li class="active"><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/transactions">Transactions</a></li>
+        <li><a href="/reports">Reports</a></li>
+        <li><a href="/goals">Goals</a></li>
+    </ul>
+    <p>SETTINGS</p>
+    <ul>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/about">About</a></li>
+    </ul>
+    <p>ACCOUNT</p>
+    <ul>
+        <li><a href="/edit_profile">Edit Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
     </ul>
 </div>

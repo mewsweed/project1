@@ -1,18 +1,27 @@
-<%- include ('partials/header') %>
-<main>
-    <div class="dashboard">
-        <%- include ('partials/sidebar') %>
-        <div class="main_content"> 
-            <div class="header">
-                <h1><%= title %></h1>
-            </div>
-            <div class="welcome-message">
-                <p>Welcome to your dashboard, <%= user.email %>!</p>
-            </div>
-            <div class="actions">
-                <p>Here you can manage your finances, view reports, and set goals.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <main>
+        <div class="dashboard">
+            <%- include ('partials/sidebar') %>
+            <div class="main_content"> 
+                <div class="header">
+                    <h1><%= title %></h1>
+                </div>
+                <div class="welcome-message">
+                    <p>Welcome to your dashboard, <%= user.email %>!</p>
+                </div>
+                <div class="actions">
+                    <p>Here you can manage your finances, view reports, and set goals.</p>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<%- include ('partials/footer') %>
+    </main>
+</body>
+</html>
