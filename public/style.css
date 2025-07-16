@@ -12,9 +12,14 @@
     --color-darkgreen:#697268;
     --color-lightred: #BD6B73;
     --color-grayblue: #8D9EC6;
+
+
     --color-main1:#92B6B1;
     --color-main2: #B2C9AB;
-    --color-sub1: #E8DDB5;
+    --color-main3: #f9fafb;
+    /* --color-sub1: #E8DDB5; */
+    --color-sub1: #fef3c7;
+    --color-sub2: #fff7f0;
 
     --header-height: 60px;
     --footer-height: 40px;}
@@ -253,15 +258,11 @@ main {
 }
 .sidebar {
     grid-area: sidebar;
-    padding: 1rem 0rem;
-    background: var(--color-darkgreen);
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    background: var(--color-sub2);
+    /* background: var(--color-main1); */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .sidebar .user_info {
-    padding: 1rem 0;
-    background: var(--color-sub1);
     display: grid;
     grid-template-columns: 1fr 2fr 2fr;
     grid-template-rows: auto auto auto;
@@ -278,19 +279,34 @@ main {
     grid-area: header;
     color: var(--color-red);
     text-align: center;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
+}
+.sidebar .user_info div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem .5rem 1rem;
 }
 .sidebar .user_info .email{
     grid-area: email;
-    color: var(--color-gray);
+
 }
 .sidebar .user_info .last_login{
     grid-area: last;
-    color: var(--color-gray);
+
 }
 .sidebar .user_info .since{
     grid-area: since;
-    color: var(--color-gray);
+
+}
+.sidebar .user_info div>strong {
+    color: var(--color-red);
+    font-weight: bold;
+}
+.sidebar .user_info div p {
+    color: var(--color-green);
+    margin: 0;
+    text-align: end;
 }
 .sidebar .user_info h3{
     margin-top: .5rem;
@@ -299,6 +315,20 @@ main {
     color: var(--color-red);
     margin-bottom: 0.5rem;
 }
+.sidebar .user_info .btns {
+    grid-area: btns;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.sidebar .user_info .logout {
+    grid-area: logout;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+}
 .sidebar ul {
     list-style: none;
     padding: 0;
@@ -306,8 +336,7 @@ main {
 }
 .main_content {
     grid-area: main;
-    background: var(--color-main2);
+    background: var(--color-main3);
     padding: 2rem;
-    border-radius: .5rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
