@@ -246,13 +246,14 @@ main {
     width: 100%;
     height: calc(100vh - var(--header-height) - var(--footer-height));
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 5fr;
     grid-template-areas: 
         'sidebar main';
 
 }
 .sidebar {
     grid-area: sidebar;
+    padding: 1rem 0rem;
     background: var(--color-darkgreen);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -280,7 +281,7 @@ main {
 .main_content {
     grid-area: main;
     background: var(--color-main2);
-    padding: 1rem;
+    padding: 2rem;
     border-radius: .5rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }

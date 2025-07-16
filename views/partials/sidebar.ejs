@@ -1,10 +1,12 @@
 <div class="sidebar">
     <div class="user_info">
-        <p>user</p>
-        <p><%= user.email %></p>
-
-        <p><a href="/logout">Logout</a></p>
+        <h3>Profile</h3>
+        <p><strong>ID:</strong> <%= user.id %></p>
+        <p><strong>Created At:</strong> <%= user.created_at %></p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Last Login:</strong> <%= user.last_Login %></p>
         <p><a href="/edit_profile">Edit Profile</a></p>
+        <p><a href="/logout">Logout</a></p>
     </div>
 <ul>
         <li><a href="/dashboard">Dashboard</a></li>

@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const session = require('express-session');
+const { create } = require('domain');
 const db = new sqlite3.Database('project.db');
 
 app.set('view engine', 'ejs');
@@ -42,6 +43,13 @@ db.serialize(() => {
         FOREIGN KEY (user_id) REFERENCES users(id)
     )`);
 });
+// Helper function to get current timestamp in Thai timezone
+// (UTC+7)
+function getThaiTimestamp() {
+    const date = new Date();
+    date.setHours(date.getHours() + 7); // เพิ่ม 7 ชั่วโมง
+    return date.toISOString().replace('T', ' ').substring(0, 19);
+}
 
 // Routes
 app.get('/', (req, res) => {
@@ -145,15 +153,19 @@ app.post('/login', (req, res) => {
             });
         }
         // Update last login time
-        db.run(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?`, [user.id], (err) => {
+        const lastLogin = getThaiTimestamp();
+        db.run(`UPDATE users SET last_login = ? WHERE id = ?`, [lastLogin, user.id], (err) => {
             if (err) {
                 return res.status(500).send('Error updating last login');
             }
             req.session.user = {
                 id: user.id,
-                email: user.email
+                email: user.email,
+                last_Login: lastLogin,
+                created_at: user.created_at
             };
-            res.redirect('/');
+            req.session.userInfo = null; // Clear user info session
+            res.redirect('/dashboard');
         });
     });
 });
@@ -195,6 +207,8 @@ app.get('/logout', (req, res) => {
     // Here you would typically clear the session or token
     res.redirect('/login');
 });
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
