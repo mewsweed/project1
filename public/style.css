@@ -246,7 +246,7 @@ main {
     width: 100%;
     height: calc(100vh - var(--header-height) - var(--footer-height));
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr 4fr;
     grid-template-areas: 
         'sidebar main';
 
@@ -255,23 +255,49 @@ main {
     grid-area: sidebar;
     padding: 1rem 0rem;
     background: var(--color-darkgreen);
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .sidebar .user_info {
+    padding: 1rem 0;
+    background: var(--color-sub1);
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: auto auto auto;
     grid-template-areas: 
-        't_name name'
-        't_email email';
-    margin-bottom: 1rem;
-    gap: 1rem;
+        'header header header'
+        'email email email'
+        'last last last'
+        'since since since'
+        'actions actions actions'
+        'btns btns btns'
+        'logout logout logout';
 }
-.sidebar .user_info p{
-    border: 1px solid red;
-}
-.sidebar .user_info p:nth-child(1) {
+.sidebar .user_info h2 {
+    grid-area: header;
     color: var(--color-red);
-    margin: 0;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.sidebar .user_info .email{
+    grid-area: email;
+    color: var(--color-gray);
+}
+.sidebar .user_info .last_login{
+    grid-area: last;
+    color: var(--color-gray);
+}
+.sidebar .user_info .since{
+    grid-area: since;
+    color: var(--color-gray);
+}
+.sidebar .user_info h3{
+    margin-top: .5rem;
+    text-align: center;
+    grid-area: actions;
+    color: var(--color-red);
+    margin-bottom: 0.5rem;
 }
 .sidebar ul {
     list-style: none;

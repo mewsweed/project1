@@ -130,7 +130,15 @@ app.post('/register', (req, res) => {
             if (err) {
                 return res.status(500).send('Error registering user');
             }
-            res.redirect('/login');
+            const userId = this.lastID;
+            // Create user info entry
+            const createdAt = getThaiTimestamp();
+            db.run(`INSERT INTO user_info (user_id, first_name, last_name, phone, address) VALUES (?, '', '', '', '')`, [userId], function(err) {
+                if (err) {
+                    return res.status(500).send('Error creating user info');
+                }
+                res.redirect('/login');
+            });
         });
     });
 });
@@ -158,17 +166,23 @@ app.post('/login', (req, res) => {
             if (err) {
                 return res.status(500).send('Error updating last login');
             }
-            req.session.user = {
-                id: user.id,
-                email: user.email,
-                last_Login: lastLogin,
-                created_at: user.created_at
-            };
-            req.session.userInfo = null; // Clear user info session
-            res.redirect('/dashboard');
+            db.get(`SELECT * FROM users WHERE id = ?`, [user.id], (err, user) => {
+                if (err) {
+                    return res.status(500).send('Error fetching user info');
+                }
+                req.session.user = {
+                    id: user.id,
+                    email: user.email,
+                    last_Login: user.last_login,
+                    created_at: user.created_at
+                };
+                res.redirect('/dashboard');
+            });
         });
+        
     });
 });
+    
 app.post('/edit_profile', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');

@@ -1,12 +1,26 @@
 <div class="sidebar">
     <div class="user_info">
-        <h3>Profile</h3>
-        <p><strong>ID:</strong> <%= user.id %></p>
-        <p><strong>Created At:</strong> <%= user.created_at %></p>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        <p><strong>Last Login:</strong> <%= user.last_Login %></p>
-        <p><a href="/edit_profile">Edit Profile</a></p>
-        <p><a href="/logout">Logout</a></p>
+        <h2>Profile</h2>
+        <div class="email">
+            <strong>Email:</strong>
+            <p><%= user.email %></p>
+        </div>
+        <div class="last_login">
+            <strong>Last Login:</strong>
+            <p><%= user.last_Login %></p>
+        </div>
+        <div class="since">
+            <strong>Member Since:</strong>
+            <p><%= user.created_at %></p>
+        </div>
+        <h3>Actions</h3>
+        <div>
+            <div><a href="/view_profile">View Profile</a></div>
+            <div><a href="/edit_profile">Edit Profile</a></div>
+            <div><a href="/change_password">Change Password</a></div>
+            
+        </div>
+        <div class="logout"><a href="/logout">Logout</a></div>
     </div>
 <ul>
         <li><a href="/dashboard">Dashboard</a></li>
