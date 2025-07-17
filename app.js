@@ -42,6 +42,16 @@ db.serialize(() => {
         last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )`);
+    db.run(`CREATE TABLE IF NOT EXISTS transactions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        type TEXT,
+        amount INTEGER,
+        category TEXT,
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`);
 });
 // Helper function to get current timestamp in Thai timezone
 // (UTC+7)
@@ -247,7 +257,7 @@ app.post('/profile', (req, res) => {
         }
     });
 });
-app.post('/ChangePassword', (req, res) => {
+app.post('/profile/changePassword', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
