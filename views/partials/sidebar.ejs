@@ -5,20 +5,20 @@
     </div>
     <p>MENU</p>
     <ul>
-        <li class="active"><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/transactions">Transactions</a></li>
-        <li><a href="/reports">Reports</a></li>
-        <li><a href="/goals">Goals</a></li>
-    </ul>
-    <p>SETTINGS</p>
-    <ul>
-        <li><a href="/settings">Settings</a></li>
-        <li><a href="/help">Help</a></li>
-        <li><a href="/about">About</a></li>
-    </ul>
-    <p>ACCOUNT</p>
-    <ul>
-        <li><a href="/edit_profile">Edit Profile</a></li>
-        <li><a href="/logout">Logout</a></li>
-    </ul>
+    <li class="<%= title === 'Dashboard' ? 'active' : '' %>"><a href="/dashboard" >Dashboard</a></li>
+    <li class="<%= title === 'Transactions' ? 'active' : '' %>"><a href="/transactions" >Transactions</a></li>
+    <li class="<%= title === 'Reports' ? 'active' : '' %>"><a href="/reports" >Reports</a></li>
+    <li class="<%= title === 'Goals' ? 'active' : '' %>"><a href="/goals" >Goals</a></li>
+</ul>
+<p>SETTINGS</p>
+<ul>
+    <li class="<%= title === 'Settings' ? 'active' : '' %>"><a href="/settings" >Settings</a></li>
+    <li class="<%= title === 'Help' ? 'active' : '' %>"><a href="/help" >Help</a></li>
+    <li class="<%= title === 'About' ? 'active' : '' %>"><a href="/about" >About</a></li>
+</ul>
+<p>ACCOUNT</p>
+<ul>
+    <li class="<%= title === 'Profile' ? 'active' : '' %>"><a href="/profile" >Profile</a></li>
+    <li class="<%= title === 'Logout' ? 'active' : '' %>"><a href="/logout" >Logout</a></li>
+</ul>
 </div>

@@ -82,19 +82,51 @@ app.get('/dashboard', (req, res) => {
         user: req.session.user
     });
 });
-app.get('/edit_profile', (req, res) => {
+app.get('/transactions', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
-
+    // Here you would typically fetch transactions from the database
+    res.render('transactions', {
+        title: 'Transactions',
+        user: req.session.user
+    });
+});
+app.get('/reports', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    // Here you would typically fetch reports from the database
+    res.render('reports', {
+        title: 'Reports',
+        user: req.session.user,
+        reports: [] // Placeholder for reports
+    });
+});
+app.get('/goals', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    // Here you would typically fetch goals from the database
+    res.render('goals', {
+        title: 'Goals',
+        user: req.session.user,
+        goals: [] // Placeholder for goals
+    });
+});
+app.get('/profile', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
     db.get(`SELECT * FROM user_info WHERE user_id = ?`, [req.session.user.id], (err, userInfo) => {
         if (err) {
             return res.status(500).send('Error fetching user info');
         }
-        res.render('edit_profile', {
-            title: 'Edit Profile',
+        res.render('profile', {
+            title: 'Profile',
             user: req.session.user,
-            userInfo: userInfo || {}
+            userInfo: userInfo || {},
+            message: null
         });
     });
 });
@@ -183,7 +215,7 @@ app.post('/login', (req, res) => {
     });
 });
     
-app.post('/edit_profile', (req, res) => {
+app.post('/profile', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
@@ -215,11 +247,60 @@ app.post('/edit_profile', (req, res) => {
         }
     });
 });
-
-
+app.post('/ChangePassword', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    const { old_password, new_password, confirm_password } = req.body;
+    const userId = req.session.user.id;
+    db.get(`SELECT * FROM users WHERE id = ? AND password = ?`, [userId, old_password], (err, user) => {
+        if (err) {
+            return res.status(500).send('Error fetching user');
+        }
+        // ดึง userInfo เพื่อส่งกลับไปหน้า profile
+        db.get(`SELECT * FROM user_info WHERE user_id = ?`, [userId], (err2, userInfo) => {
+            if (err2) {
+                return res.status(500).send('Error fetching user info');
+            }
+            if (!user) {
+                return res.render('profile', {
+                    title: 'Profile',
+                    user: req.session.user,
+                    userInfo: userInfo || {},
+                    message: 'Invalid old password'
+                });
+            }
+            if (new_password !== confirm_password) {
+                return res.render('profile', {
+                    title: 'Profile',
+                    user: req.session.user,
+                    userInfo: userInfo || {},
+                    message: 'New passwords do not match'
+                });
+            }
+            db.run(`UPDATE users SET password = ? WHERE id = ?`, [new_password, userId], (err3) => {
+                if (err3) {
+                    return res.status(500).send('Error updating password');
+                }
+                return res.render('profile', {
+                    title: 'Profile',
+                    user: req.session.user,
+                    userInfo: userInfo || {},
+                    message: 'Password changed successfully'
+                });
+            });
+        });
+    });
+});
+    
 app.get('/logout', (req, res) => {
     // Here you would typically clear the session or token
-    res.redirect('/login');
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Error logging out');
+        }
+        res.redirect('/login');
+    });
 });
 
 
