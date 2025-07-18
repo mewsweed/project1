@@ -84,24 +84,76 @@ app.get('/register', (req, res) => {
     });
 });
 app.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    res.render('dashboard', {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  const userID = req.session.user.id;
+  const range = req.query.range || 'month'; // ✅ ย้ายมาด้านบน
+  const now = new Date();
+  let startDate;
+
+  if (range === 'day') {
+    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  } else if (range === 'week') {
+    startDate = new Date(now);
+    startDate.setDate(now.getDate() - now.getDay());
+  } else if (range === 'month') {
+    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  } else if (range === 'year') {
+    startDate = new Date(now.getFullYear(), 0, 1);
+  } else {
+    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  }
+
+  const isoStartDate = startDate.toISOString().split('T')[0];
+  
+  db.all(
+    `SELECT type, SUM(amount) AS total
+     FROM transactions
+     WHERE user_id = ? AND DATE(created_at) >= DATE(?)
+     GROUP BY type`,
+    [userID, isoStartDate],
+    (err, results) => {
+      if (err) {
+        console.error('❌ SQL Error:', err.message); // ← ดูตรงนี้
+        return res.status(500).send('Error loading Dashboard');
+        }
+
+      const dashboard = { income: 0, expense: 0 };
+      results.forEach(row => {
+        if (row.type === 'income') dashboard.income = row.total;
+        if (row.type === 'expense') dashboard.expense = row.total;
+      });
+
+      res.render('dashboard', {
         title: 'Dashboard',
-        user: req.session.user
-    });
+        user: req.session.user,
+        dashboard,
+        range  // ✅ ตอนนี้ใช้งานได้แล้ว
+      });
+    }
+  );
 });
+
 app.get('/transactions', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
-    // Here you would typically fetch transactions from the database
-    res.render('transactions', {
-        title: 'Transactions',
-        user: req.session.user
+    const userID = req.session.user.id;
+    db.all(`SELECT * FROM transactions WHERE user_id = ?`, [userID], (err, transactions) => {
+        if (err) {
+            return res.status(500).send('Error loading transactions table');
+        }
+        return res.render('transactions', {
+            title: 'Transactions',
+            user: req.session.user,
+            message: null,
+            transactions: transactions || []
+        });
     });
 });
+
 app.get('/reports', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
@@ -141,7 +193,7 @@ app.get('/profile', (req, res) => {
     });
 });
 
-// operations
+//===================================================== OPERATION ================================================================================================================
 app.post('/register', (req, res) => {
     const { email, password, password2 } = req.body;
     if (!email || !password) {
@@ -225,13 +277,13 @@ app.post('/login', (req, res) => {
     });
 });
     
-app.post('/profile', (req, res) => {
+app.post('/profile', (req, res) => {                
     if (!req.session.user) {
         return res.redirect('/login');
     }
     const { first_name, last_name, phone, address } = req.body;
     const userId = req.session.user.id;
-    db.get(`SELECT * FROM user_info WHERE user_id = ?`, [userId], (err, userInfo) => {
+    db.get(`SELECT * FROM user_info WHERE user_id = ?`, [userId], (err, userInfo) => {      // GET USER DATA
         if (err) {
             return res.status(500).send('Error fetching user info');
         }
@@ -302,7 +354,23 @@ app.post('/profile/changePassword', (req, res) => {
         });
     });
 });
-    
+
+app.post('/transactions/add', (req, res) =>{
+    if(!req.session.user){
+        return res.redirect('/login');
+    }
+    const {type, amount, category, description} = req.body
+    const userID = req.session.user.id
+    db.run(`INSERT INTO transactions (user_id, type, amount, category, description) VALUES (?,?,?,?,?)`,
+        [userID, type, amount, category, description], function (err){
+            if (err){
+                return res.status(500).send('Error Add Transactions');
+            }
+            res.redirect('/transactions');
+        }
+    )
+});
+
 app.get('/logout', (req, res) => {
     // Here you would typically clear the session or token
     req.session.destroy((err) => {
@@ -314,6 +382,26 @@ app.get('/logout', (req, res) => {
 });
 
 
+//==================================== DEV =======================================
+app.post('/dev/truncate/:table', (req, res) => {
+    const allowedTables = ['users', 'user_info', 'transactions'];
+    const table = req.params.table;
+    if (!allowedTables.includes(table)) {
+        return res.status(400).json({ message: 'Invalid table name.' });
+    }
+    db.run(`DELETE FROM ${table}`, function(err) {
+        if (err) {
+            return res.status(500).json({ message: `Error truncating ${table} table.` });
+        }
+        db.run(`DELETE FROM sqlite_sequence WHERE name = ?`, [table], function(err2) {
+            if (err2) {
+                return res.status(500).json({ message: `Error resetting sequence for ${table}.` });
+            }
+            res.json({ message: `${table} table truncated successfully.` });
+        });
+    });
+});
+//==================================== DEV =======================================
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

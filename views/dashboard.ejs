@@ -23,26 +23,30 @@
                         <p>User: <%= user.email %></p>
                     </div>
                 </div>
-                <div class="sort">
-                    <div class="length" id="dateDisplay">
-                        <p></p>
+                <form method="GET" action="/dashboard">
+                    <div class="sort">
+                        <div class="length" id="dateDisplay">
+                            <p></p>
+                        </div>
+                        <div class="drop-down">
+                            <select id="dateRangeSelect" name="range" onchange="this.form.submit()">
+                                <option value="day" <%= range === 'day' ? 'selected' : '' %>>Day</option>
+                                <option value="week" <%= range === 'week' ? 'selected' : '' %>>Week</option>
+                                <option value="month" <%= range === 'month' ? 'selected' : '' %>>Month</option>
+                                <option value="year" <%= range === 'year' ? 'selected' : '' %>>Year</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="drop-down">
-                        <select id="dateRangeSelect">
-                            <option value="day">Day</option>
-                            <option value="week">Week</option>
-                            <option value="month">Month</option>
-                            <option value="year">Year</option>
-                        </select>
-                    </div>
-                </div>
+                </form>
                 <script>
                     function formatDate(date) {
                         return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
                     }
+
                     function formatMonth(date) {
                         return date.toLocaleDateString('en-US', { month: 'short' });
                     }
+
                     function updateDateDisplay() {
                         const select = document.getElementById('dateRangeSelect');
                         const display = document.querySelector('#dateDisplay p');
@@ -63,21 +67,22 @@
                             display.textContent = now.getFullYear();
                         }
                     }
+
                     document.getElementById('dateRangeSelect').addEventListener('change', updateDateDisplay);
                     updateDateDisplay();
                 </script>
                 <div class="content">
                     <div class="card income">
                         <h3>Income</h3>
-                        <p>Total Income: $20,000</p>
+                        <p class="income"><%= dashboard.income %> BATH</p>
                     </div>
                     <div class="card expenses">
                         <h3>Expenses</h3>
-                        <p>Total Expenses: $5,000</p>
+                        <p class="expense"><%= dashboard.expense %> BATH</p>
                     </div>
                     <div class="card savings">
                         <h3>Savings</h3>
-                        <p>Total Savings: $15,000</p>
+                        <p class="saving"><%= dashboard.income - dashboard.expense %> BATH</p>
                     </div>
                 </div>
             </div>
