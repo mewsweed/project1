@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-    <%- include ('partials/header') %>
-    <main>
-    <div class="hero">       
+<%- include('partials/body') %>
+<%- include ('partials/header') %>
+    <div class="hero">  
         <% if (!user) { %>
         <div class="card">
             <h2>Get Started</h2>
@@ -33,11 +25,12 @@
             <p>Feel free to explore your dashboard.</p>
             <div class="buttons">
                 <a href="/dashboard">Go to Dashboard</a>
+                <a href="/transaction">Go to Transaction</a>
                 <a href="/logout">Logout</a>
             </div>
         </div>
         <% } %>
-        <div class="features">
+        <div class="card features">
             <h2>Features</h2>
             <ul>
                 <li>Track your expenses</li>
@@ -47,7 +40,6 @@
             </ul>
         </div>
     </div>
-    </main>
-    <%- include ('partials/footer') %>
-</body>
-</html>
+
+<%- include ('partials/footer') %>
+

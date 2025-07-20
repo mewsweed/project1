@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-    <main>
-        <div class="transactions">
+<%- include('partials/body') %>
+        <div class="main transactions">
             <%- include ('partials/sidebar') %>
-            <div class="main_content"> 
+            <div class="content"> 
                 <div class="header">
                     <h1><%= title %></h1>
                     <div class="user-info">
@@ -24,7 +15,7 @@
                     </div>
                 </div>
                 <div class="transactions-form">
-                    <h2>Add Income / Expense</h2>
+                    <h2>New Transaction</h2>
                     <form action="/transactions/add" method="POST">
                         <div class="form-group">
                             <label for="type">Type</label>
@@ -109,6 +100,4 @@
                 </div>
             </div>
         </div>
-    </main>
-</body>
-</html>
+<%- include('partials/footer') %>
